@@ -18,7 +18,7 @@ bool Game::Initialize() {
 	}
 
 	// Create an SDL Window
-	mWindow = SDL_CreateWindow("Game Programming in C++ (Ch1)", 100, 100, 1024,
+	mWindow = SDL_CreateWindow("Pong in C++", 100, 100, 1024,
 			765, 0);
 
 	if (!mWindow) {
