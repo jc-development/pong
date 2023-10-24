@@ -8,6 +8,12 @@ struct Vector2
     float y;
 };
 
+struct Ball {
+	Vector2 position;
+	Vector2 velocity;
+};
+
+
 
 // Game class
 class Game
@@ -47,4 +53,7 @@ class Game
         Vector2 mBallPos;
         // Velocity of ball
         Vector2 mBallVel;
+
+        Ball mBall1;
+        Ball mBall2;
 };
