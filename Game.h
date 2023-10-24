@@ -1,7 +1,8 @@
 #pragma once
 #include "SDL2/SDL.h"
+#include <vector>
 
-// Vector2 struct jus stores the x/y coordinates for now
+// Vector2 struct just stores the x/y coordinates for now
 struct Vector2
 {
     float x;
@@ -56,4 +57,5 @@ class Game
 
         Ball mBall1;
         Ball mBall2;
+        std::vector<Ball> mBalls;
 };

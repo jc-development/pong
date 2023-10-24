@@ -1,5 +1,5 @@
 #include "Game.h"
-
+#include <iostream>
 const int thickness = 15;
 const float paddleH = 100.0f;
 
@@ -48,6 +48,9 @@ bool Game::Initialize() {
 	mBall2.position.y = 768.0f / 2.0f;
 	mBall2.velocity.x = -200.0f;
 	mBall2.velocity.y = -235.0f;
+
+	mBalls.push_back(mBall1);
+	mBalls.push_back(mBall2);
 	return true;
 }
 
@@ -142,20 +145,17 @@ void Game::UpdateGame() {
 	mBall2.position.x += mBall2.velocity.x * deltaTime;
 	mBall2.position.y += mBall2.velocity.y * deltaTime;
 
-	// Bounce if needed
-	// Did we intersect with the paddle?
+
 	float diff1 = mPaddlePos1.y - mBall1.position.y;
 	float diff2 = mPaddlePos2.y - mBall1.position.y;
+//	float diff3 = mPaddlePos1.y - mBall2.position.y;
+//	float diff4 = mPaddlePos2.y - mBall2.position.y;
 
-	float diff3 = mPaddlePos1.y - mBall2.position.y;
-	float diff4 = mPaddlePos2.y - mBall2.position.y;
 
 	// Take absolute value of difference
 	diff1 = (diff1 > 0.0f) ? diff1 : -diff1;
 	diff2 = (diff2 > 0.0f) ? diff2 : -diff2;
 
-	diff3 = (diff3 > 0.0f) ? diff3 : -diff3;
-	diff4 = (diff4 > 0.0f) ? diff4 : -diff4;
 
 	if (
 	// Our y-difference is small enough
@@ -192,16 +192,17 @@ void Game::UpdateGame() {
 	if (mBall1.position.y <= thickness && mBall1.velocity.y < 0.0f) {
 		mBall1.velocity.y *= -1;
 	}
-	// Did the ball collide with the bottom wall?
+//	 Did the ball collide with the bottom wall?
 	else if (mBall1.position.y >= (768 - thickness) && mBall1.velocity.y > 0.0f) {
 		mBall1.velocity.y *= -1;
 	}
+
 
 	//------
 
 	if (
 		// Our y-difference is small enough
-		diff3 <= paddleH / 2.0f &&
+		diff1 <= paddleH / 2.0f &&
 		// We are in the correct x-position
 				mBall2.position.x <= 25.0f && mBall2.position.x >= 20.0f &&
 				// The ball is moving left
@@ -217,7 +218,7 @@ void Game::UpdateGame() {
 
 		if (
 		// Our y-difference is small enough
-		diff4 <= paddleH / 2.0f &&
+		diff2 <= paddleH / 2.0f &&
 		// We are in the correct x-position
 				mBall2.position.x >= 25.0f && mBall2.position.x >= (1024.0f - thickness) &&
 				// The ball is moving right
@@ -228,7 +229,6 @@ void Game::UpdateGame() {
 		else if (mBall2.position.x >= 1024.0f) {
 			mIsRunning = false;
 		}
-
 
 		// Did the ball collide with the top wall?
 		if (mBall2.position.y <= thickness && mBall2.velocity.y < 0.0f) {
@@ -259,13 +259,6 @@ void Game::GenerateOutput() {
 	// Draw bottom wall
 	wall.y = 768.0 - thickness;
 	SDL_RenderFillRect(mRenderer, &wall);
-
-	// Draw right wall
-//    wall.x = 1024 - thickness;
-//    wall.y = 0;
-//    wall.w = thickness;
-//    wall.h = 1024;
-//    SDL_RenderFillRect(mRenderer, &wall);
 
 	// Draw paddle1
 	SDL_Rect paddle1 { static_cast<int>(mPaddlePos1.x),
